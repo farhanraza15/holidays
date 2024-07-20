@@ -37,12 +37,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}api/holidays",
+					"raw": "{{base_url}}api/holidays/createHoliday",
 					"host": [
 						"{{base_url}}api"
 					],
 					"path": [
-						"holidays"
+						"holidays",
+						"createHoliday"
 					]
 				},
 				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -69,12 +70,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}api/holidays/CANADA",
+					"raw": "{{base_url}}api/holidays/findByCountry/CANADA",
 					"host": [
 						"{{base_url}}api"
 					],
 					"path": [
 						"holidays",
+						"findByCountry",
 						"CANADA"
 					]
 				},
@@ -104,7 +106,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"New Year Day\",\n  \"date\": \"2024-01-01\",\n  \"country\": \"CANADA\"\n}",
+					"raw": "{\n    \"name\": \"Christmas\",\n    \"date\": \"2024-12-25\",\n    \"country\": \"CANADA\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -112,12 +114,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}api/holidays/1",
+					"raw": "{{base_url}}api/holidays/updateHoliday/1",
 					"host": [
 						"{{base_url}}api"
 					],
 					"path": [
 						"holidays",
+						"updateHoliday",
 						"1"
 					]
 				},

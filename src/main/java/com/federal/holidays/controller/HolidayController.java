@@ -29,7 +29,7 @@ public class HolidayController {
 	private HolidayService holidayService;
 
 	@Operation(summary = "List all holidays by country name.")
-	@GetMapping("/{country}")
+	@GetMapping("/findByCountry/{country}")
 	public ResponseEntity<List<Holiday>> getHolidaysByCountry(@PathVariable String country) {
 		
 		List<Holiday> result = holidayService.getHolidaysByCountry(country);
@@ -42,15 +42,17 @@ public class HolidayController {
 	}
 
 	@Operation(summary = "Add a single record of holiday.")
-	@PostMapping
+	@PostMapping("/createHoliday")
 	public Holiday addHoliday(@RequestBody Holiday holiday) {
 		return holidayService.addHoliday(holiday);
 	}
 
 	@Operation(summary = "update a single record of holiday.")
-	@PutMapping("/{id}")
+	@PutMapping("/updateHoliday/{id}")
 	public ResponseEntity<Holiday> updateHoliday(@PathVariable Long id, @RequestBody Holiday holiday) {
-		if (null == holidayService.updateHoliday(id, holiday)) {
+
+		Holiday result = holidayService.updateHoliday(id, holiday);
+		if (null == result) {
 			return new ResponseEntity<Holiday>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Holiday>(HttpStatus.OK);
