@@ -1,6 +1,6 @@
 package com.federal.holidays.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,13 +30,15 @@ public class HolidayController {
 
 	@Operation(summary = "List all holidays by country name.")
 	@GetMapping("/{country}")
-	public ResponseEntity<Optional<Holiday>> getHolidaysByCountry(@PathVariable String country) {
+	public ResponseEntity<List<Holiday>> getHolidaysByCountry(@PathVariable String country) {
 		
-		if (holidayService.getHolidaysByCountry(country).isEmpty()) {
-			return new ResponseEntity<Optional<Holiday>>(HttpStatus.NOT_FOUND);
+		List<Holiday> result = holidayService.getHolidaysByCountry(country);
+		
+		if (result.isEmpty()) {
+			return new ResponseEntity<List<Holiday>>(HttpStatus.NOT_FOUND);
 		}
-		Optional<Holiday> result = holidayService.getHolidaysByCountry(country);
-		return new ResponseEntity<Optional<Holiday>>(result, HttpStatus.OK);
+
+		return new ResponseEntity<List<Holiday>>(result, HttpStatus.OK);
 	}
 
 	@Operation(summary = "Add a single record of holiday.")

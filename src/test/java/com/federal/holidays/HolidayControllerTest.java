@@ -8,7 +8,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,6 @@ public class HolidayControllerTest {
 	@Mock
 	private HolidayService holidayService;
 	private Holiday holiday1;
-	private Holiday holiday2;
 
 	@BeforeEach
 	public void setUp() {
@@ -40,12 +40,9 @@ public class HolidayControllerTest {
 		holiday1 = new Holiday();
 		holiday1.setId(1L);
 		holiday1.setName("New Year");
+		holiday1.setCountry("CANADA");
 		holiday1.setDate(LocalDate.now());
 
-		holiday2 = new Holiday();
-		holiday2.setId(2L);
-		holiday2.setName("Independence Day");
-		holiday2.setDate(LocalDate.now());
 	}
 
 	@Test
@@ -55,38 +52,26 @@ public class HolidayControllerTest {
 				.andExpect(status().isOk());
 	}
 
-//	@Test
 	public void getHolidaysByCountryNotFound() throws Exception {
-		when(holidayService.getHolidaysByCountry(anyString())).thenReturn(Optional.empty());
-		this.mockMvc.perform(get("/api/holidays/CANADA")).andExpect(status().isNotFound());
+		when(holidayService.getHolidaysByCountry(anyString())).thenReturn(Collections.emptyList());
+		this.mockMvc.perform(get("/api/holidays/CANADA").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
 	}
 
-//	@Test
 	public void getHolidaysByCountry() throws Exception {
-		when(holidayService.getHolidaysByCountry(anyString())).thenReturn(Optional.of(getHolidayTestData()));
-		this.mockMvc.perform(get("/api/holidays/CANADA")).andExpect(status().isOk());
+		when(holidayService.getHolidaysByCountry(anyString())).thenReturn(Arrays.asList(holiday1));
+		this.mockMvc.perform(get("/api/holidays/CANADA").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 
-//	@Test
+	@Test
 	public void updateHolidaysWithInvalidId() throws Exception {
 		when(holidayService.updateHoliday(any(Long.class), any(Holiday.class))).thenReturn(null);
 		this.mockMvc.perform(get("/api/holidays/0")).andExpect(status().isNotFound());
 	}
 
-//	@Test
 	public void updateHolidaysWithValidId() throws Exception {
 		when(holidayService.updateHoliday(any(Long.class), any(Holiday.class))).thenReturn(holiday1);
 		this.mockMvc.perform(get("/api/holidays/1")).andExpect(status().isOk());
 	}
-
-	public Holiday getHolidayTestData() {
-
-		Holiday holiday = new Holiday();
-		holiday.setCountry("CANADA");
-		holiday.setId(1l);
-		holiday.setName("New Year Day.");
-
-		return holiday;
-	}
-
 }

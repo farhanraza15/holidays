@@ -15,7 +15,7 @@ public class HolidayServiceImpl implements HolidayService {
 	@Autowired
 	private HolidayRepository holidayRepository;
 
-	public Optional<Holiday> getHolidaysByCountry(String country) {
+	public List<Holiday> getHolidaysByCountry(String country) {
 		return holidayRepository.findByCountry(country);
 	}
 

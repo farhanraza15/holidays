@@ -4,8 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -32,16 +35,19 @@ public class HolidayServiceTest {
 	@Test
 	void testGetHolidayByName() {
 
-		when(holidayRepository.findByCountry("CANADA")).thenReturn(Optional.of(getHolidayTestData()));
+		List<Holiday> holidays = new ArrayList<Holiday>();
+		holidays.add(getHolidayTestData());
+		
+		when(holidayRepository.findByCountry("CANADA")).thenReturn(holidays);
 
-		Optional<Holiday> result = holidayService.getHolidaysByCountry("CANADA");
-		assertTrue(result.isPresent());
-		assertEquals("New Year Day.", result.get().getName());
+		List<Holiday> result = holidayService.getHolidaysByCountry("CANADA");
+		assertTrue(!result.isEmpty());
+		assertEquals("New Year Day.", result.get(0).getName());
 	}
 
 	@Test
 	void testAddHoliday() {
-		when(holidayRepository.save(getHolidayTestData())).thenReturn(getHolidayTestData());
+		when(holidayRepository.save(any(Holiday.class))).thenReturn(getHolidayTestData());
 
 		Holiday savedHoliday = holidayService.addHoliday(getHolidayTestData());
 		assertNotNull(savedHoliday);
@@ -53,7 +59,7 @@ public class HolidayServiceTest {
 
 		when(holidayRepository.findById(1l)).thenReturn(Optional.of(getHolidayTestData()));
 
-		when(holidayRepository.save(getHolidayTestData())).thenReturn(getHolidayTestData());
+		when(holidayRepository.save(any(Holiday.class))).thenReturn(getHolidayTestData());
 
 		Holiday savedHoliday = holidayService.updateHoliday(1l, getHolidayTestData());
 		assertNotNull(savedHoliday);
