@@ -37,7 +37,7 @@ Started FederalHolidaysApplication in...
 >
 > - src/test/resources/holiday-data.sql file is provided with insert queries. This would handle CANADA & USA federal holidays but can be further extended
 > - Open http://localhost:8080/h2-console and copy paste the entire script on SQL panel and hit run button
-> - This would load the whole data into in memory he database
+> - This would load the whole data into in memory h2 database
 
 > #### How to run APIs
 
