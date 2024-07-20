@@ -2,6 +2,7 @@ package com.federal.holidays.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,14 +44,24 @@ public class HolidayController {
 
 	@Operation(summary = "Add a single record of holiday.")
 	@PostMapping("/createHoliday")
-	public Holiday addHoliday(@RequestBody Holiday holiday) {
-		return holidayService.addHoliday(holiday);
+	public ResponseEntity<Holiday> addHoliday(@RequestBody Holiday holiday) {
+		
+		if(StringUtils.isBlank(holiday.getName()) || StringUtils.isBlank(holiday.getCountry())) {
+			return new ResponseEntity<Holiday>(holiday, HttpStatus.BAD_REQUEST);
+		}
+		
+		Holiday result = holidayService.addHoliday(holiday);
+		return new ResponseEntity<Holiday>(result, HttpStatus.OK);
 	}
 
 	@Operation(summary = "update a single record of holiday.")
 	@PutMapping("/updateHoliday/{id}")
 	public ResponseEntity<Holiday> updateHoliday(@PathVariable Long id, @RequestBody Holiday holiday) {
 
+		if(StringUtils.isBlank(holiday.getName()) || StringUtils.isBlank(holiday.getCountry())) {
+			return new ResponseEntity<Holiday>(holiday, HttpStatus.BAD_REQUEST);
+		}
+		
 		Holiday result = holidayService.updateHoliday(id, holiday);
 		if (null == result) {
 			return new ResponseEntity<Holiday>(HttpStatus.NOT_FOUND);
