@@ -1,6 +1,5 @@
 package com.federal.holidays.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.federal.holidays.model.Holiday;
 import com.federal.holidays.service.HolidayService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
 @RestController
 @RequestMapping("/api/holidays")
+@Tag(name = "Holiday Management System")
 public class HolidayController {
 
 	@Autowired
 	private HolidayService holidayService;
 
+	@Operation(summary = "List all holidays by country name.")
 	@GetMapping("/{country}")
 	public ResponseEntity<Optional<Holiday>> getHolidaysByCountry(@PathVariable String country) {
 		
@@ -34,11 +39,13 @@ public class HolidayController {
 		return new ResponseEntity<Optional<Holiday>>(result, HttpStatus.OK);
 	}
 
+	@Operation(summary = "Add a single record of holiday.")
 	@PostMapping
 	public Holiday addHoliday(@RequestBody Holiday holiday) {
 		return holidayService.addHoliday(holiday);
 	}
 
+	@Operation(summary = "update a single record of holiday.")
 	@PutMapping("/{id}")
 	public ResponseEntity<Holiday> updateHoliday(@PathVariable Long id, @RequestBody Holiday holiday) {
 		if (null == holidayService.updateHoliday(id, holiday)) {
